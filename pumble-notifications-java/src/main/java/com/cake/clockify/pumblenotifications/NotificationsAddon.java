@@ -103,6 +103,9 @@ public final class NotificationsAddon extends ClockifyAddon {
 
     private void registerLifecycleEvents() {
         // this callback is called when the addon is installed in a workspace
+        // notice that the auth token that this callback is provided with
+        // has full access to the Clockify workspace and should not be leaked to the user
+        // or to the frontend
         registerLifecycleEvent(ClockifyLifecycleEvent.builder()
                 .path("/lifecycle/installed")
                 .onInstalled()

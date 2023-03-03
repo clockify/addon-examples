@@ -59,6 +59,9 @@ public final class HelloWorldAddon extends ClockifyAddon {
 
     private void registerLifecycleEvents() {
         // this callback is called when the addon is installed in a workspace
+        // notice that the auth token that this callback is provided with
+        // has full access to the Clockify workspace and should not be leaked to the user
+        // or to the frontend
         registerLifecycleEvent(ClockifyLifecycleEvent.builder()
                 .path("/lifecycle/installed")
                 .onInstalled()
@@ -100,6 +103,8 @@ public final class HelloWorldAddon extends ClockifyAddon {
                 .build(), r -> {
 
             // UI components receive a parameter containing the JWT token whenever they are rendered
+            // this JWT token is specific to the current user that is viewing the iframe
+            // and will only be able to access data for this user
             String[] parameters = r.getQuery().get(QUERY_AUTHORIZATION_PARAMETER);
             String jwt = Arrays.stream(Optional.ofNullable(parameters).orElse(new String[0]))
                     .findFirst()
