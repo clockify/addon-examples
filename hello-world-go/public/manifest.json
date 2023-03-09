@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "key": "helloworld",
+  "name": "Hello World",
+  "description": "A sample addon that renders a UI component",
+  "baseUrl": "",
+  "lifecycle": [],
+  "webhooks": [],
+  "components": [
+    {
+      "type": "widget",
+      "accessLevel": "EVERYONE",
+      "path": "/ui"
+    }
+  ],
+  "settings": {
+    "tabs": [
+      {
+        "id": "settings",
+        "name": "Settings",
+        "settings": [
+          {
+            "id": "displayed-text",
+            "name": "Displayed text",
+            "type": "TXT",
+            "accessLevel":"EVERYONE",
+            "value": "Hello World!"
+          }
+        ]
+      }
+    ]
+  }
+}
