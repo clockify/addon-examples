@@ -31,9 +31,8 @@ This addon example serves the manifest under the following path:
 ```
 {baseUrl}/manifest
 ```
-<br>
 
-
+### Required environment variables
 The Server class is the entrypoint to the addon application.
 
 The addon makes use of the following environment variables:
@@ -44,9 +43,10 @@ ADDON_NAME=Hello World
 ADDON_DESCRIPTION=A sample addon that renders a UI component
 
 PUBLIC_URL=
-LOCAL_PORT={port}
+LOCAL_PORT=8080
 ```
 
+### Retrieving a public URL
 The addon must be accessible through a public URL in order for Clockify to be able to communicate with it.
 
 For this example we made use of a free service called <a href="https://ngrok.com">ngrok</a>.

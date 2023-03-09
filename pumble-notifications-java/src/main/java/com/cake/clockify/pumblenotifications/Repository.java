@@ -4,11 +4,7 @@ import com.cake.clockify.addonsdk.shared.utils.Utils;
 import com.cake.clockify.pumblenotifications.model.Installation;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.model.Sorts;
-import com.cake.clockify.pumblenotifications.model.Setting;
 import org.bson.Document;
-
-import java.util.List;
 
 public class Repository {
     private static final String COLLECTION_INSTALLATIONS = "installations";
@@ -31,22 +27,12 @@ public class Repository {
                 .deleteOne(document);
     }
 
-    public void updateSettings(String addonId, List<Setting> settings) {
-        Document update = new Document("$set", new Document("settings", settings));
-
-        client.getDatabase(mongoDatabase)
-                .getCollection(COLLECTION_INSTALLATIONS)
-                .updateOne(new Document("addonId", addonId), update);
-    }
-
-    public Installation getInstallation(String workspaceId) {
-        Document filter = new Document()
-                .append("workspaceId", workspaceId);
+    public Installation getInstallation(String addonId) {
+        Document filter = new Document().append("addonId", addonId);
 
         Document result = client.getDatabase(mongoDatabase)
                 .getCollection(COLLECTION_INSTALLATIONS)
                 .find(filter)
-                .sort(Sorts.descending("_id"))
                 .first();
 
         if (result == null) {

@@ -1,4 +1,4 @@
-## Pumble Notifications
+# Pumble Notifications
 
 This is a simple addon which listens to events from Clockify webhooks, and forwards these events to a Pumble channel.
 
@@ -10,26 +10,53 @@ A MongoDB database is used to store the data for an addon installation (workspac
 Once an event is received, it is processed and then POSTed to the Pumble webhook endpoint that the user has configured.
 
 ### Getting started
+#### Requirements
+- A Github account and an access token associated with it
+- Docker
+
+#### Running the addon with docker
+The addon can be run using the provided docker compose file.
+
+You should update the PUBLIC_URL environment variable from the docker-compose.yml to reflect the actual value.
+
+First, we build the image by passing in a Github username and it's access token.
+These are only used in order to pull the Addon SDK dependency from Github packages.
+
+Then, we run the container and pass in the addon public URL.
+The container will expose the following port for the addon: 8080.
+
+Use the following commands to run the addon app:
+```shell
+docker-compose build --build-arg GITHUB_USERNAME="{username}" --build-arg GITHUB_TOKEN="{token}"
+docker-compose up
+```
+
+This addon example serves the manifest under the following path:
+```
+{baseUrl}/manifest
+```
+
+### Required environment variables
 The Server class is the entrypoint to the addon application.
 
-In order to run the server, there is a number of environment variables that have to be defined.
-Below are the contents of a sample .env file:
+The addon makes use of the following environment variables:
+
 ```
 ADDON_KEY=pumblenotifications
 ADDON_NAME=Pumble Notifications
 ADDON_DESCRIPTION=A sample addon that registers Clockify webhooks and then posts a message to the configured Pumble channel whenever the events are triggered.
 
 PUBLIC_URL=
+MONGO_URI=
+MONGO_DATABASE=
 LOCAL_PORT=8080
-MONGO_URI=mongodb://root:123456@localhost:27017/?authSource=admin
-MONGO_DATABASE=pumble-notifications
 ```
-
+### Retrieving a public URL
 The addon must be accessible through a public URL in order for Clockify to be able to communicate with it.
 
 For this example we made use of a free service called <a href="https://ngrok.com">ngrok</a>.
 
-After downloading the binary, we can execute the following command which will expose our server running on our local port through a public URL.
+After downloading the binary, we can execute the following command which will expose the server running on our local port through a public URL.
 ```shell
 ngrok http 8080
 ```
