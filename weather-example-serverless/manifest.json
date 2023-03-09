@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "key": "wather-addon",
+  "name": "Weather Addon",
+  "description": "A sample addon that renders a UI component",
+  "baseUrl": "https://4b7c-95-107-169-8.eu.ngrok.io",
+  "lifecycle": [
+  ],
+  "webhooks": [],
+  "components": [
+    {
+      "type": "widget",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "iconPath": "./icon.png"
+    }
+  ]
+}
