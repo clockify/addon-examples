@@ -5,11 +5,9 @@ This is a simple addon which will render a widget component that when clicked wi
 ### How it works
 The embedded webserver is started, and handlers are registered for the lifecycle and the UI component.
 
-A MongoDB database is used to store the data for an addon installation (workspace info, settings etc).
-
 ### Getting started
 #### Requirements
-- A Github account and an access token associated with it.
+- A Github account and an access token associated with it
 - Docker
 
 #### Running the addon with docker
@@ -71,9 +69,6 @@ The addon makes use of several HTTP handlers:
 
 The first group is intended to handle lifecycle events and store related information linked to the lifecycle of the addon.
 The latter is intended to render the requested UI component.
-
-#### Repository
-The addon installation data are stored in a MongoDB instance.
 
 #### Addon
 The HelloWorldAddon class contains all the information related to the addon.
