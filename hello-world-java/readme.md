@@ -27,6 +27,10 @@ docker-compose build --build-arg GITHUB_USERNAME="{username}" --build-arg GITHUB
 docker-compose up
 ```
 
+This addon example serves the manifest under the following path:
+```
+{baseUrl}/manifest
+```
 <br>
 
 

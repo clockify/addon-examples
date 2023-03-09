@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// register a handler to server all the static files under the public directory
+	// register a handler to serve all the static files under the public directory
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	handleUiComponent()
 
