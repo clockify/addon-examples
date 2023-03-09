@@ -16,9 +16,9 @@ The addon can be run using the provided docker compose file.
 You should update the PUBLIC_URL environment variable from the docker-compose.yml to reflect the actual value.
 
 First, we build the image by passing in a Github username and it's access token.
-These are only used in order to pull the Addons SDK dependency from Github packages.
+These are only used in order to pull the Addon SDK dependency from Github packages.
 
-Then we run the container and pass in the addon public URL.
+Then, we run the container and pass in the addon public URL.
 The container will expose the following port for the addon: 8080.
 
 Use the following commands to run the addon app:

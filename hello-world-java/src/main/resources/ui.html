@@ -39,7 +39,7 @@
         // get the workspaceId claim
         const workspaceId = claims.workspaceId;
 
-        let endpoint = `https://developer.dev.ops.clockify.me/api/addon/workspaces/${workspaceId}/settings`;
+        let endpoint = `https://developer.clockify.me/api/addon/workspaces/${workspaceId}/settings`;
         fetch(endpoint, {
             method: 'GET',
             headers: {
