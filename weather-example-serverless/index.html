@@ -67,8 +67,8 @@
 </div>
 
 <script>
-    const DEV_BASE_URL = 'https://developer.clockify.me/api'
-    const OPEN_WEATHER_API = 'https://api.open-meteo.com/v1/forecast';
+    const FORECAST_API = 'https://api.open-meteo.com/v1/forecast';
+    const GEOLOCATION_API = 'https://geocoding-api.open-meteo.com/v1/search'
     const parseJwt = (token) => {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -77,6 +77,25 @@
         }).join(''));
 
         return JSON.parse(jsonPayload);
+    }
+
+    const getLatLng = async (timeZone) => {
+        // New York City coordinates
+        const DEFAULT_LAT = 40.73061;
+        const DEFAULT_LNG = -73.935242;
+        try {
+            let cityName = timeZone.split('/')[1];
+            if (cityName === 'UTC') cityName = 'Greenwich';
+            const response = await fetch(`${GEOLOCATION_API}?name=${cityName}`);
+            const data = await response.json();
+            if (data.results && data.results.length > 0) {
+                return { lat: data.results[0].latitude, lng: data.results[0].longitude }
+            }
+
+            throw new Error('No results');
+        } catch (e) {
+            return { lat: DEFAULT_LAT, lng: DEFAULT_LNG }
+        }
     }
 
     window.addEventListener("load", () => {
@@ -90,25 +109,23 @@
             errorMessageElement.append('User was not found');
         } else {
             const decodedToken = parseJwt(userAuthKey);
-            const getUserApiUrl = `${DEV_BASE_URL}/addon/workspaces/${decodedToken.workspaceId}/user`;
+            const getUserApiUrl = `${decodedToken.backendUrl}/addon/workspaces/${decodedToken.workspaceId}/user`;
             const headers = new Headers();
-            headers.append('x-addon-token', userAuthKey)
+            headers.append('x-addon-token', userAuthKey);
             fetch(getUserApiUrl, { headers })
                 .then((res) => {
-                    res.json().then((data) => {
-                        document.getElementById('user_name').append(`Hello ${data.name}`)
-                    }).catch((e) => console.log(e))
+                    res.json()
+                        .then(async (data) => {
+                            document.getElementById('user_name').append(`Hello ${data.name}`);
+                            const coords = await getLatLng(data.timeZone);
+                            getWeatherData(coords)
+                        })
+                        .catch(() => errorMessageElement.append('Could not get user data'))
                 })
-                .catch(() => {
-                    errorMessageElement.append('Could not get user data');
-                })
+                .catch(() => errorMessageElement.append('Could not get user data'))
         }
-        const getWeatherData = () => {
-            // New York City coordinates
-            const lat = 40.73061;
-            const lon = -73.935242;
-
-            fetch(`${OPEN_WEATHER_API}?latitude=${lat}&longitude=${lon}&daily=temperature_2m_min,temperature_2m_max&timezone=America/New_York`)
+        const getWeatherData = (coords) => {
+            fetch(`${FORECAST_API}?latitude=${coords.lat}&longitude=${coords.lng}&daily=temperature_2m_min,temperature_2m_max&timezone=auto`)
                 .then(response => response.json())
                 .then(data => {
                     const weatherData = data.daily;
@@ -131,7 +148,6 @@
                     errorMessageElement.append('Sorry, something went wrong. Please try again later.')
                 });
         }
-        getWeatherData()
     });
 </script>
 </body>
