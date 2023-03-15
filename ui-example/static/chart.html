@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://resources.developer.clockify.me/ui/latest/css/main.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .canvas-container {
+            height: 400px;
+            background-color: #1D272C;
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="canvas-container">
+        <canvas id="top-time-off-chart"></canvas>
+    </div>
+    <script>
+        window.addEventListener("load", () => {
+            const ctx = document.getElementById('top-time-off-chart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Employee 1', 'Employee 2', 'Employee 3', 'Employee 4', 'Employee 5'],
+                    datasets: [{
+                        label: '# of Day Off',
+                        backgroundColor: '#f44336',
+                        data: [11, 8, 5, 3, 3, 2],
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            border: {
+                                display: false
+                            },
+                            grid: {
+                                color: '#4A5963'
+                            }
+                        },
+                        x: {
+                            border: {
+                                display: false
+                            },
+                            grid: {
+                                display: false,
+                            },
+                            borderDash: [5, 5],
+                            ticks: {
+                                color: '#C8D1D9',
+                                minRotation: 30,
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

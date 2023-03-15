@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0",
+  "key": "ui-examples",
+  "name": "UI examples",
+  "description": "Example of every UI entrypoint for an addon",
+  "baseUrl": "https://5da0-46-252-40-196.eu.ngrok.io",
+  "lifecycle": [
+    {
+      "type": "INSTALLED",
+      "path": "/lifecycle/installed"
+    },
+    {
+      "type": "DELETED",
+      "path": "/lifecycle/uninstalled"
+    },
+    {
+      "type": "SETTINGS_UPDATED",
+      "path": "/lifecycle/settings-updated"
+    }
+  ],
+  "webhooks": [],
+  "components": [
+    {
+      "type": "widget",
+      "accessLevel": "EVERYONE",
+      "path": "/"
+    },
+    {
+      "type": "sidebar",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "label": "Sidebar"
+    },
+    {
+      "type": "timeoff.tab",
+      "accessLevel": "EVERYONE",
+      "path": "/chart.html",
+      "label": "Monthly Time Offs"
+    },
+    {
+      "type": "schedule.tab",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "label": "Schedule Tab"
+    },
+    {
+      "type": "approvals.tab",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "label": "Approvals Tab"
+    },
+    {
+      "type": "reports.tab",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "label": "Reports Tab"
+    },
+    {
+      "type": "activity.tab",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "label": "Activity Tab"
+    },
+    {
+      "type": "team.tab",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "label": "Team Tab"
+    },
+    {
+      "type": "projects.tab",
+      "accessLevel": "EVERYONE",
+      "path": "/",
+      "label": "Projects Tab"
+    }
+  ],
+  "settings": {
+    "tabs": [
+      {
+        "id": "settings",
+        "name": "settings",
+        "settings": [
+          {
+            "id": "addon-dropdown-single-setting-1",
+            "name": "Dropdown single setting",
+            "accessLevel": "EVERYONE",
+            "type": "DROPDOWN_SINGLE",
+            "value": "option 1",
+            "allowedValues": [
+              "option 1",
+              "option 2",
+              "option 3"
+            ]
+          },
+          {
+            "id": "addon-dropdown-multiple-setting-1",
+            "name": "Dropdown multiple setting",
+            "accessLevel": "ADMINS",
+            "type": "DROPDOWN_MULTIPLE",
+            "value": [
+              "option 1",
+              "option 2"
+            ],
+            "allowedValues": [
+              "option 1",
+              "option 2",
+              "option 3"
+            ]
+          }
+        ],
+        "groups": [
+          {
+            "id": "addon-settings-group-1",
+            "title": "Addon settings group 1",
+            "header": {
+              "title": "Addon settings"
+            },
+            "description": "Addon settings group 1",
+            "settings": [
+              {
+                "id": "addon-txt-setting",
+                "name": "Txt setting",
+                "accessLevel": "ADMINS",
+                "type": "TXT",
+                "value": "Some text"
+              },
+              {
+                "id": "addon-link-setting",
+                "name": "Link setting",
+                "accessLevel": "EVERYONE",
+                "type": "LINK",
+                "value": "https://clockify.me"
+              },
+              {
+                "id": "addon-number-setting",
+                "name": "Number setting",
+                "accessLevel": "EVERYONE",
+                "type": "NUMBER",
+                "value": 5
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

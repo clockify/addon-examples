@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://resources.developer.clockify.me/ui/latest/css/main.min.css" />
+</head>
+
+<body>
+    <div class="tabs">
+        <div class="tabs-header">
+            <div class="tab-header active" data-tab="tab1">Alert</div>
+            <div class="tab-header" data-tab="tab2">Checkbox</div>
+            <div class="tab-header" data-tab="tab3">Input</div>
+            <div class="tab-header" data-tab="tab4">Radio</div>
+            <div class="tab-header" data-tab="tab5">Select</div>
+            <div class="tab-header" data-tab="tab6">Switch</div>
+        </div>
+        <div class="tabs-content">
+            <div class="tab-content tab1 active">
+                <div class="alert alert-info">Alert Info</div>
+                <div class="alert alert-success mt-4">Alert Success</div>
+                <div class="alert alert-danger mt-4">Alert Danger</div>
+                <div class="alert alert-warning mt-4">Alert Warning</div>
+            </div>
+            <div class="tab-content tab2">
+                <div class="checkbox-container">
+                    <input type="checkbox" class="checkbox" name="activate_users" id="activate_users" />
+                    <label for="activate_users">Default Checkbox</label>
+                </div>
+                <div class="mt-4">
+                    <div class="checkbox-container mt-4">
+                        <input type="checkbox" class="checkbox" disabled name="activate_users_2" id="activate_users_2" />
+                        <label for="activate_users_2">Disabled Checkbox</label>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="checkbox" disabled checked name="activate_users_3" id="activate_users_3" />
+                        <label for="activate_users_2">Disabled and Checked Checkbox</label>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content tab3">
+                <div>
+                    <input type="text" placeholder="a placeholder" />
+                </div>
+                <div class="mt-4">
+                    <input type="text" placeholder="a placeholder" value="success input" class="success" />
+                </div>
+                <div class="mt-4">
+                    <input type="text" placeholder="a placeholder" value="warning input" class="warning" />
+                </div>
+                <div class="mt-4">
+                    <input type="text" placeholder="a placeholder" value="error input" class="error" />
+                </div>
+                <div class="mt-4">
+                    <input type="text" placeholder="a placeholder" value="disabled input" disabled />
+                </div>
+                <div class="mt-4">
+                    <input type="text" placeholder="a placeholder" value="readonly input" readonly />
+                </div>
+            </div>
+            <div class="tab-content tab4">
+                <div style="display: flex;">
+                    <div class="radio-group">
+                        <input type="radio" name="checkbox-group" class="radio" value="1" id="radio_1" checked />
+                        <label for="radio_1">Radio 1</label>
+                    </div>
+                    <div class="radio-group ml-4">
+                        <input type="radio" name="checkbox-group" class="radio" value="1" id="radio_2"/>
+                        <label for="radio_2">Radio 2</label>
+                    </div>
+                </div>
+                <div style="display: flex;" class="mt-4">
+                    <div class="radio-group">
+                        <input type="radio" name="checkbox-group" class="radio" value="1" id="radio_3" disabled />
+                        <label for="radio_3">Disabled Radio</label>
+                    </div>
+                    <div class="radio-group ml-4">
+                        <input type="radio" name="checkbox-group" class="radio" value="1" id="radio_4"/>
+                        <label for="radio_4">Radio 4</label>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content tab5">
+                <select class="select">
+                    <option value="" disabled selected hidden>Select some option</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <div class="mt-4">
+                    <select class="select" disabled>
+                        <option value="" disabled selected hidden>Disabled Select</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="tab-content tab6">
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="switch_1" />
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="switch-label">Some Label</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://resources.developer.clockify.me/ui/latest/js/main.min.js"></script>
+</body>
+</html>
