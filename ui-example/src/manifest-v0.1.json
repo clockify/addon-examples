@@ -3,7 +3,7 @@
   "key": "ui-examples",
   "name": "UI examples",
   "description": "Example of every UI entrypoint for an addon",
-  "baseUrl": "https://5da0-46-252-40-196.eu.ngrok.io",
+  "baseUrl": "",
   "lifecycle": [
     {
       "type": "INSTALLED",
@@ -23,7 +23,7 @@
     {
       "type": "widget",
       "accessLevel": "EVERYONE",
-      "path": "/"
+      "path": "/chat.html"
     },
     {
       "type": "sidebar",

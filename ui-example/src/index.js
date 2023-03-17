@@ -1,28 +1,56 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const { getPublicUrlFromNgrok } = require('./getPublicUrlFromNgrok')
+const exitHook = require('async-exit-hook')
+const ngrok = require('ngrok')
+const { config } = require('./config')
+const manifest = require('./manifest-v0.1.json');
 
-const port = process.env.NODE_PORT || 8080
+console.log({ manifest })
 
-const app = express()
+const manifestName = 'manifest-v0.1.json';
 
-app.use(bodyParser.json())
-app.use(express.static('static'))
+;(async () => {
+    const publicUrl = await getPublicUrlFromNgrok()
 
-app.post('/lifecycle/installed', (req, res) => {
-    console.log(req.body, "installed");
-    res.send('Got a POST request')
-})
+    const manifestPublicUrl =  `${publicUrl}/${manifestName}`
+    manifest["baseUrl"] = publicUrl 
 
-app.post('/lifecycle/uninstalled', (req, res) => {
-    console.log(req.body, "uninstalled");
-    res.send('Got a POST request')
-})
+    const app = express()
 
-app.post('/lifecycle/settings-updated', (req, res) => {
-    console.log(req.body, "settings-updated");
-    res.send('Got a POST request')
-})
+    app.use(bodyParser.json())
+    app.use(express.static('static'))
 
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`)
-})
+    app.get('/manifest-v0.1.json', (req, res) => {
+        res.send(manifest)
+    })
+
+    app.post('/lifecycle/installed', (req, res) => {
+        console.log(req.body, "installed");
+        res.send('got a post request')
+    })
+
+    app.post('/lifecycle/uninstalled', (req, res) => {
+        console.log(req.body, "uninstalled");
+        res.send('got a post request')
+    })
+
+    app.post('/lifecycle/settings-updated', (req, res) => {
+        console.log(req.body, "settings-updated");
+        res.send('got a post request')
+    })
+
+    app.listen(config.port, () => {
+        console.log(`app listening on port ${config.port}`)
+    })
+
+    console.log(`running on ${manifestPublicUrl}`)
+})();
+
+process.once('SIGUSR2', async function() {
+    await ngrok.kill()
+    process.kill(process.pid, 'SIGUSR2');
+});
+
+
+

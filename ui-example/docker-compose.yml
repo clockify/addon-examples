@@ -3,8 +3,10 @@ services:
   addon:
     restart: always
     build: .
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env
     ports:
       - "8080:8080"
-    volumes:
-      - ./:/app
     entrypoint: npm run dev

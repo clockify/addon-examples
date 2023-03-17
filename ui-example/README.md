@@ -20,22 +20,20 @@ This add-on is displayed in all currently supported locations.
 9. Reports tab
 10. Settings tab
 
-On tab locations you can add more than one tab, in this example we've only used one tab per location. The time off tab contains an example with charts. Settings shows every UI element that we support via the manifest configuration. Every other entrypoint shows custom UI elements that can be used via the official [UI library](https://resources.developer.clockify.me/ui/latest/css/main.min.css) .
+On tab locations you can add more than one tab, in this example we've only used one tab per location. The time off tab contains an example with charts and widget is a chat example. Settings shows every UI element that we support via the manifest configuration. Every other entrypoint shows custom UI elements that can be used via the official [UI library](https://resources.developer.clockify.me/ui/latest/css/main.min.css) .
 
 ## How to run this addon locally
 
-You need docker installed and ngrok and then you need to run:
+You need docker installed and a ngrok auth token that can be found on [ngrok dashboard](https://dashboard.ngrok.com/get-started/your-authtoken).
 
+
+```
+cp .env.example .env
+```
+Edit .env and include your token on `NGROK_AUTH_TOKEN=(your token here)`
 ```
 docker compose up
 ```
 
-After that the container is up, you need to forward the local env to a URL that can be accessible for installation.
+After that the container is up, use the url provided on the console to register the addon. This addon comes up with ngrok and generates the public url by itself.
 
-```
-ngrok http 8080
-```
-
-Change the base url on the manifest configuration `static/manifest-v0.1.json` to the one the ngrok is providing.
-
-The URL that needs to be used is `[ngrok-url]/manifest-v0.1.json`.

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://resources.developer.clockify.me/ui/latest/css/main.min.css" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        height: 100%;
+      }
+
+      input, div, span {
+        color: #2f2f2f;
+      }
+
+      .chat--header {
+        height: 40px;
+        border-bottom: 1px solid #cfcfcf;
+        color: #2f2f2f;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: calc(100% - 20px);
+        background-color: white;
+        padding: 0 10px;
+      }
+
+      .chat--header .chat--header-title {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .chat--header .chat--header-subtitle {
+        font-size: 16px;
+        margin-left: 22px;
+        margin-top: 2px;
+      }
+
+      .chat--messages {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        /* overflow-y: scroll; */
+        padding: 10px;
+      }
+
+      .chat--messages .message-user, .chat--messages .message {
+        margin-top: 10px;
+      }
+
+      .chat--messages .message-user {
+        display: flex;
+        align-items: center;
+      }
+
+      .chat--messages .message-user img {
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
+      .chat--messages .message-user span {
+        margin-top: 2px;
+        margin-left: 12px;
+      }
+
+      .chat--messages .message {
+        padding: 10px;
+        background-color: #e2e2e2;
+        border-radius: 10px;
+        width: fit-content;
+      }
+
+      .chat--messages .message-user-right, .chat--messages .message-right {
+        align-self: end;
+      }
+
+      .chat--input {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #cfcfcf;
+        background: white;
+      }
+
+      .chat--input input {
+        padding: 0 10px;
+        height: 30px;
+        background-color: #d2d2d2;
+        border: none;
+        width: calc(100% - 80px);
+        margin-left: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .chat--input svg {
+        margin-left: 10px;
+      }
+
+      .chat--input svg:hover {
+        cursor: pointer;
+        user-select: none;
+      }
+    </style>
+</head>
+
+<body>
+  <div class="chat-container">
+    <div class="chat--header">
+      <span class="chat--header-title">Support chat</span>
+      <span class="chat--header-subtitle">Active 5min ago</span>
+    </div>
+    <div class="chat--messages">
+      <div class="message-user"><img src="https://robohash.org/aleksander" widht="30" height="30" /><span>Alex</span></div>
+      <div class="message">Hello!</div>
+      <div class="message-user message-user-right"><img src="https://robohash.org/ljuba" width="30" height="30" /><span>Support</span></div>
+      <div class="message message-right">Hi :)</div>
+      <div class="message message-right">How are you?</div>
+    </div>
+    <div class="chat--input">
+      <input type="text" /><svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <path fill="#006ae3" d="M2,21L23,12L2,3V10L17,12L2,14V21Z"></path>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
