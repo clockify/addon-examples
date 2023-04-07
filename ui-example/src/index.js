@@ -1,12 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const { getPublicUrlFromNgrok } = require('./getPublicUrlFromNgrok')
-const exitHook = require('async-exit-hook')
 const ngrok = require('ngrok')
 const { config } = require('./config')
 const manifest = require('./manifest-v0.1.json');
-
-console.log({ manifest })
+const clc = require("cli-color");
 
 const manifestName = 'manifest-v0.1.json';
 
@@ -41,10 +39,17 @@ const manifestName = 'manifest-v0.1.json';
     })
 
     app.listen(config.port, () => {
-        console.log(`app listening on port ${config.port}`)
+        // console.log(`app listening on port ${config.port}`)
     })
 
-    console.log(`running on ${manifestPublicUrl}`)
+    console.log('\n\n')
+    console.log(clc.magenta('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'))
+    console.log('\n')
+    console.log(clc.blue('Manifest is running on:'), clc.green(manifestPublicUrl), '\n')
+    console.log(clc.blue("You can add it to your Clockify test instance, available from the \nDeveloper Portal at:"), clc.green('https://developer.marketplace.cake.com/'))
+    console.log('\n')
+    console.log(clc.magenta('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'))
+    console.log('\n')
 })();
 
 process.once('SIGUSR2', async function() {

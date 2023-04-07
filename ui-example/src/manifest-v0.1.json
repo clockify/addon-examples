@@ -29,49 +29,57 @@
       "type": "sidebar",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "label": "Sidebar"
+      "label": "Sidebar",
+      "iconPath": "/tab_icon.svg"
     },
     {
       "type": "timeoff.tab",
       "accessLevel": "EVERYONE",
       "path": "/chart.html",
-      "label": "Monthly Time Offs"
+      "label": "Monthly Time Offs",
+      "iconPath": "/tab_icon.svg"
     },
     {
       "type": "schedule.tab",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "label": "Schedule Tab"
+      "label": "Schedule Tab",
+      "iconPath": "/tab_icon.svg"
     },
     {
       "type": "approvals.tab",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "label": "Approvals Tab"
+      "label": "Approvals Tab",
+      "iconPath": "/tab_icon.svg"
     },
     {
       "type": "reports.tab",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "label": "Reports Tab"
+      "label": "Reports Tab",
+      "iconPath": "/tab_icon.svg"
     },
     {
       "type": "activity.tab",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "label": "Activity Tab"
+      "label": "Activity Tab",
+      "iconPath": "/tab_icon.svg"
     },
     {
       "type": "team.tab",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "label": "Team Tab"
+      "label": "Team Tab",
+      "iconPath": "/tab_icon.svg"
     },
     {
       "type": "projects.tab",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "label": "Projects Tab"
+      "label": "Projects Tab",
+      "iconPath": "/tab_icon.svg"
     }
   ],
   "settings": {
