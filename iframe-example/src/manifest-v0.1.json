@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "key": "iframe-examples",
+  "name": "Iframe examples",
+  "description": "Example of embedding an iframe on sidebar",
+  "baseUrl": "",
+  "lifecycle": [
+    {
+      "type": "SETTINGS_UPDATED",
+      "path": "/lifecycle/settings-updated"
+    }
+  ],
+  "webhooks": [],
+  "components": [
+    {
+      "type": "sidebar",
+      "accessLevel": "EVERYONE",
+      "path": "/sidebar.html",
+      "label": "IFRAME",
+      "iconPath": "/tab_icon.svg"
+    }
+  ],
+  "settings": {
+    "tabs": [
+      {
+        "id": "settings",
+        "name": "settings",
+        "settings": [
+          {
+            "id": "iframe-link-setting",
+            "name": "Iframe link",
+            "accessLevel": "EVERYONE",
+            "type": "LINK",
+            "value": "https://clockify.me"
+          }
+        ]
+      }
+    ]
+  }
+}

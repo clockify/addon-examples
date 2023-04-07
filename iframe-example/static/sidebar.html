@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iframe example</title>
+    <style>
+        html, body, iframe {
+            height: 100%;
+        }
+        body {
+            margin: 0;
+        }
+        iframe {
+            border: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+   <iframe></iframe>
+    <script>
+        try {
+            let url = document.documentURI
+            let parsedURL = new URL(url);
+
+            // Get auth token from url
+            let token = parsedURL.searchParams.get('auth_token');
+
+            // Decode JWT token and get workspaceId
+            let workspaceId = JSON.parse(atob(token.split('.')[1])).workspaceId
+
+            // Get settings values from the extension
+            let endpoint = `https://developer.clockify.me/api/addon/workspaces/${workspaceId}/settings`;
+            fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Addon-Token': token
+                }
+            }).then(response => {
+                response.json().then(rs => {
+
+                    // Get the URL setting
+                    const urlValue = rs.tabs[0].settings[0].value
+
+                    // Update the iframe with the url from the settings page
+                    const iframeDocument = document.querySelector('iframe')
+                    iframeDocument.src = urlValue;
+                })
+            });
+        } catch(e) {
+            console.error(e)
+        }
+    </script>
+</body>
+</html>

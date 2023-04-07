@@ -1,0 +1,13 @@
+version: '3'
+services:
+  addon:
+    restart: always
+    build: .
+    volumes:
+      - ./src:/app/src
+      - ./static:/app/static
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    entrypoint: npm run dev
