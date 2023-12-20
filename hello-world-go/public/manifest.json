@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.2",
   "key": "helloworld",
   "name": "Hello World",
   "description": "A sample addon that renders a UI component",
@@ -10,7 +10,8 @@
     {
       "type": "widget",
       "accessLevel": "EVERYONE",
-      "path": "/ui"
+      "path": "/ui",
+      "label": "widget"
     }
   ],
   "settings": {
@@ -23,11 +24,14 @@
             "id": "displayed-text",
             "name": "Displayed text",
             "type": "TXT",
-            "accessLevel":"EVERYONE",
+            "accessLevel": "EVERYONE",
             "value": "Hello World!"
           }
         ]
       }
     ]
-  }
+  },
+  "minimalSubscriptionPlan": "FREE",
+  "scopes": [
+  ]
 }
