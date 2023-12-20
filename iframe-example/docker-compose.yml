@@ -2,7 +2,9 @@ version: '3'
 services:
   addon:
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     volumes:
       - ./src:/app/src
       - ./static:/app/static

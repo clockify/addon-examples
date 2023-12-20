@@ -29,10 +29,14 @@
             let token = parsedURL.searchParams.get('auth_token');
 
             // Decode JWT token and get workspaceId
-            let workspaceId = JSON.parse(atob(token.split('.')[1])).workspaceId
+            let jwtContent = JSON.parse(atob(token.split('.')[1]))
+            let workspaceId = jwtContent.workspaceId
+            let backendUrl = jwtContent.backendUrl
+
+            console.log({ jwtContent })
 
             // Get settings values from the extension
-            let endpoint = `https://developer.clockify.me/api/addon/workspaces/${workspaceId}/settings`;
+            let endpoint = `${backendUrl}/addon/workspaces/${workspaceId}/settings`;
             fetch(endpoint, {
                 method: 'GET',
                 headers: {

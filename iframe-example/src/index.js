@@ -1,44 +1,14 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const { getPublicUrlFromNgrok } = require('./getPublicUrlFromNgrok')
-const ngrok = require('ngrok')
-const { config } = require('./config')
-const manifest = require('./manifest-v0.1.json');
-const clc = require("cli-color");
+const { app } = require("./createWebserver");
+const { config } = require("./config");
+const { printServerInfo } = require("./printServerInfo");
 
-const manifestName = 'manifest-v0.1.json';
+(async () => {
+  // Include endpoints
+  require("./endpoints");
 
-;(async () => {
-    const publicUrl = await getPublicUrlFromNgrok()
+  // Start server
+  app.listen(config.port, () => {});
 
-    const manifestPublicUrl =  `${publicUrl}/${manifestName}`
-    manifest["baseUrl"] = publicUrl
-
-    const app = express()
-
-    app.use(bodyParser.json())
-    app.use(express.static('static'))
-
-    app.get('/manifest-v0.1.json', (req, res) => {
-        res.send(manifest)
-    })
-
-    app.listen(config.port, () => {})
-
-    console.log('\n\n')
-    console.log(clc.magenta('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'))
-    console.log('\n')
-    console.log(clc.blue('Manifest is running on:'), clc.green(manifestPublicUrl), '\n')
-    console.log(clc.blue("You can add it to your Clockify test instance, available from the \nDeveloper Portal at:"), clc.green('https://developer.marketplace.cake.com/'))
-    console.log('\n')
-    console.log(clc.magenta('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'))
-    console.log('\n')
+  // Print server info
+  printServerInfo();
 })();
-
-process.once('SIGUSR2', async function() {
-    await ngrok.kill()
-    process.kill(process.pid, 'SIGUSR2');
-});
-
-
-

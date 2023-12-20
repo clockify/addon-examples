@@ -1,0 +1,29 @@
+:80 {
+	@static {
+		path_regexp ^.*\.(js|css|png|jpe?g|svg|ico)$
+	}
+	@other {
+		not path_regexp ^.*\.(js|css|png|jpe?g|svg|ico)$
+	}
+	header X-Robots-Tag "noindex"
+	header @static Cache-control max-age=2592000
+	header @other Cache-control no-store
+	header -server
+	encode zstd gzip
+	log {
+		output stdout
+		format json
+	}
+
+	root * /app
+
+	handle /manifest.json {
+	    header Content-Type application/json
+	    respond `$MANIFEST_FILE`
+	}
+
+	route {
+		try_files {path} {path}.html {path}/ index.html
+		file_server
+	}
+}

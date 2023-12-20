@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+
+if (process.env.NODE_ENV === "production") {
+  console.error(
+    "Do not use nodemon in production, run bin/www directly instead.",
+  );
+  process.exitCode = 1;
+  return;
+}
+
+const ngrok = require("ngrok");
+const nodemon = require("nodemon");
+
+ngrok
+  .connect({
+    proto: "http",
+    addr: "8080",
+    authtoken: process.env.NGROK_AUTH_TOKEN,
+  })
+  .then((url) => {
+    nodemon({
+      script: "./src/index.js",
+      exec: `URL=${url} node`,
+    })
+      .on("start", () => {
+        console.log("The application has started");
+      })
+      .on("restart", (files) => {
+        console.group("Application restarted due to:");
+        files.forEach((file) => console.log(file));
+        console.groupEnd();
+      })
+      .on("quit", () => {
+        console.log("The application has quit, closing ngrok tunnel");
+        ngrok.kill().then(() => process.exit(0));
+      });
+  })
+  .catch((error) => {
+    console.error("Error opening ngrok tunnel: ", error);
+    process.exitCode = 1;
+  });

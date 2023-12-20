@@ -1,9 +1,11 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.2",
   "key": "iframe-examples",
   "name": "Iframe examples",
   "description": "Example of embedding an iframe on sidebar",
-  "baseUrl": "",
+  "baseUrl": "{$BASE_URL}",
+  "minimalSubscriptionPlan": "FREE",
+  "scopes": [],
   "lifecycle": [
     {
       "type": "SETTINGS_UPDATED",
