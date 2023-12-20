@@ -1,9 +1,9 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.2",
   "key": "ui-examples",
   "name": "UI examples",
   "description": "Example of every UI entrypoint for an addon",
-  "baseUrl": "",
+  "baseUrl": "https://271a-95-107-169-8.eu.ngrok.io",
   "lifecycle": [
     {
       "type": "INSTALLED",
@@ -151,5 +151,7 @@
         ]
       }
     ]
-  }
+  },
+  "minimalSubscriptionPlan": "FREE",
+  "scopes": []
 }
