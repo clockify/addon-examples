@@ -3,11 +3,10 @@ package com.cake.clockify.helloworld;
 import com.cake.clockify.addonsdk.clockify.ClockifyAddon;
 import com.cake.clockify.addonsdk.clockify.model.ClockifyComponent;
 import com.cake.clockify.addonsdk.clockify.model.ClockifyLifecycleEvent;
+import com.cake.clockify.addonsdk.clockify.model.ClockifyManifest;
 import com.cake.clockify.addonsdk.clockify.model.ClockifySetting;
 import com.cake.clockify.addonsdk.clockify.model.ClockifySettings;
 import com.cake.clockify.addonsdk.clockify.model.ClockifySettingsTab;
-import com.cake.clockify.addonsdk.shared.AddonDescriptor;
-import com.cake.clockify.addonsdk.shared.response.HttpResponse;
 import com.cake.clockify.helloworld.model.Installation;
 import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
@@ -20,18 +19,38 @@ import java.util.List;
 
 
 public final class HelloWorldAddon extends ClockifyAddon {
+    public static final ClockifySettings SETTINGS = ClockifySettings.builder()
+            .settingsTabs(List.of(ClockifySettingsTab.builder()
+                    .id("settings")
+                    .name("Settings")
+                    .settings(
+                            List.of(ClockifySetting.builder()
+                                    .id("displayed-text")
+                                    .name("Displayed text")
+                                    .allowEveryone()
+                                    .asTxt()
+                                    .value("Hello World!")
+                                    .build())
+                    ).build()))
+            .build();
     private final Gson gson = new Gson();
 
     public HelloWorldAddon(String publicUrl) {
-        super(new AddonDescriptor(
-                System.getenv("ADDON_KEY"),
-                System.getenv("ADDON_NAME"),
-                System.getenv("ADDON_DESCRIPTION"),
-                publicUrl)
+        super(ClockifyManifest.builder()
+                .key(System.getenv("ADDON_KEY"))
+                .name(System.getenv("ADDON_NAME"))
+                .baseUrl(publicUrl)
+                .requireStandardPlan()
+                .scopes(List.of())
+                .settings(SETTINGS)
+                .description(System.getenv("ADDON_DESCRIPTION"))
+                .build()
         );
+        // lifecycles, components and webhooks can either be added to the manifest builder above
+        // if their respective routes are already handled, or they can be registered below in order
+        // for them to be served through the addon's servlet
         registerLifecycleEvents();
         registerUiComponents();
-        registerSettings();
     }
 
     private void registerLifecycleEvents() {
@@ -42,11 +61,11 @@ public final class HelloWorldAddon extends ClockifyAddon {
         registerLifecycleEvent(ClockifyLifecycleEvent.builder()
                 .path("/lifecycle/installed")
                 .onInstalled()
-                .build(), r -> {
+                .build(), (request, response) -> {
 
-            Installation payload = gson.fromJson(r.getBodyReader(), Installation.class);
+            Installation payload = gson.fromJson(request.getReader(), Installation.class);
             // handle the payload here
-            return HttpResponse.builder().statusCode(HttpStatus.OK_200).build();
+            response.setStatus(HttpStatus.OK_200);
         });
 
         // this callback is called when the addon is uninstalled from the workspace
@@ -54,11 +73,11 @@ public final class HelloWorldAddon extends ClockifyAddon {
         registerLifecycleEvent(ClockifyLifecycleEvent.builder()
                 .path("/lifecycle/uninstalled")
                 .onDeleted()
-                .build(), r -> {
+                .build(), (request, response) -> {
 
-            Installation payload = gson.fromJson(r.getBodyReader(), Installation.class);
+            Installation payload = gson.fromJson(request.getReader(), Installation.class);
             // handle the payload here
-            return HttpResponse.builder().statusCode(HttpStatus.OK_200).build();
+            response.setStatus(HttpStatus.OK_200);
         });
     }
 
@@ -67,7 +86,8 @@ public final class HelloWorldAddon extends ClockifyAddon {
                 .widget()
                 .allowEveryone()
                 .path("/ui")
-                .build(), r -> {
+                .label("widget")
+                .build(), (request, response) -> {
 
             String html;
             try (InputStream is = getClass().getClassLoader().getResourceAsStream("ui.html")) {
@@ -77,30 +97,9 @@ public final class HelloWorldAddon extends ClockifyAddon {
                 throw new RuntimeException(e);
             }
 
-            // return a response with content type HTML
-            return HttpResponse.builder()
-                    .statusCode(HttpStatus.OK_200)
-                    .contentType("text/html")
-                    .body(html)
-                    .build();
+            response.getWriter().write(html);
+            response.setHeader("Content-Type", "text/html");
+            response.setStatus(HttpStatus.OK_200);
         });
-    }
-
-    private void registerSettings() {
-        // register the settings that we need for this addon to be functional
-        registerSettings(ClockifySettings.builder()
-                .settingsTabs(List.of(ClockifySettingsTab.builder()
-                        .id("settings")
-                        .name("Settings")
-                        .settings(
-                                List.of(ClockifySetting.builder()
-                                        .id("displayed-text")
-                                        .name("Displayed text")
-                                        .allowEveryone()
-                                        .asTxt()
-                                        .value("Hello World!")
-                                        .build())
-                        ).build()))
-                .build());
     }
 }
