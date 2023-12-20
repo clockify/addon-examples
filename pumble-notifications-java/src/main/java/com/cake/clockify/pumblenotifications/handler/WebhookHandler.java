@@ -2,13 +2,13 @@ package com.cake.clockify.pumblenotifications.handler;
 
 import com.cake.clockify.addonsdk.clockify.model.ClockifySetting;
 import com.cake.clockify.addonsdk.clockify.model.ClockifySettings;
-import com.cake.clockify.addonsdk.shared.RequestHandler;
-import com.cake.clockify.addonsdk.shared.response.HttpResponse;
 import com.cake.clockify.pumblenotifications.AddonRequest;
 import com.cake.clockify.pumblenotifications.Repository;
 import com.cake.clockify.pumblenotifications.model.Installation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import okhttp3.MediaType;
@@ -19,11 +19,8 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.eclipse.jetty.http.HttpStatus;
 
-import java.util.Map;
-import java.util.Objects;
-
 @RequiredArgsConstructor
-public class WebhookHandler implements RequestHandler<AddonRequest> {
+public class WebhookHandler extends AddonRequest {
     private static final String HEADER_CLOCKIFY_WEBHOOK_EVENT_TYPE = "Clockify-Webhook-Event-Type";
     private final MediaType mediaType = MediaType.parse("application/json");
 
@@ -31,20 +28,22 @@ public class WebhookHandler implements RequestHandler<AddonRequest> {
     private final OkHttpClient okHttpClient = new OkHttpClient();
     private final Repository repository;
 
+
     @Override
-    public HttpResponse handle(AddonRequest r) {
-        String eventType = r.getHeader(HEADER_CLOCKIFY_WEBHOOK_EVENT_TYPE);
-        String webhookUrl = retrieveWebhookUrlFromSettings(r.getAddonId());
+    public void additionalHandling(AddonRequest request) {
+
+        String eventType = request.getRequest().getHeader(HEADER_CLOCKIFY_WEBHOOK_EVENT_TYPE);
+        String webhookUrl = retrieveWebhookUrlFromSettings(request.getAddonId());
 
         String textPayload = prettyGson.toJson(Map.of(
-                "event", eventType,
-                "payload", r.getBody(Map.class))
+            "event", eventType,
+            "payload", request.getBody(Map.class))
         );
 
         Request okhttpRequest = new Request.Builder()
-                .post(RequestBody.create(prettyGson.toJson(Map.of("text", textPayload)), mediaType))
-                .url(webhookUrl)
-                .build();
+            .post(RequestBody.create(prettyGson.toJson(Map.of("text", textPayload)), mediaType))
+            .url(webhookUrl)
+            .build();
 
         try (Response response = new OkHttpClient().newCall(okhttpRequest).execute()) {
             if (!response.isSuccessful()) {
@@ -53,8 +52,7 @@ public class WebhookHandler implements RequestHandler<AddonRequest> {
         } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }
-
-        return HttpResponse.builder().statusCode(HttpStatus.OK_200).build();
+        request.getResponse().setStatus(HttpStatus.OK_200);
     }
 
     @SneakyThrows

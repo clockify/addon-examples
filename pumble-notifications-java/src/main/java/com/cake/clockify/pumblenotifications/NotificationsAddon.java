@@ -2,40 +2,47 @@ package com.cake.clockify.pumblenotifications;
 
 import com.cake.clockify.addonsdk.clockify.ClockifyAddon;
 import com.cake.clockify.addonsdk.clockify.model.ClockifyLifecycleEvent;
+import com.cake.clockify.addonsdk.clockify.model.ClockifyManifest;
 import com.cake.clockify.addonsdk.clockify.model.ClockifySetting;
 import com.cake.clockify.addonsdk.clockify.model.ClockifySettings;
 import com.cake.clockify.addonsdk.clockify.model.ClockifySettingsTab;
 import com.cake.clockify.addonsdk.clockify.model.ClockifyWebhook;
-import com.cake.clockify.addonsdk.shared.AddonDescriptor;
-import com.cake.clockify.addonsdk.shared.response.HttpResponse;
 import com.cake.clockify.pumblenotifications.handler.WebhookHandler;
 import com.cake.clockify.pumblenotifications.model.Installation;
-import org.eclipse.jetty.http.HttpStatus;
-
 import java.util.List;
+import org.eclipse.jetty.http.HttpStatus;
 
 public final class NotificationsAddon extends ClockifyAddon {
     private final Repository repository = new Repository();
 
     public NotificationsAddon(String publicUrl) {
-        super(new AddonDescriptor(
-                System.getenv("ADDON_KEY"),
-                System.getenv("ADDON_NAME"),
-                System.getenv("ADDON_DESCRIPTION"),
-                publicUrl)
+
+        super(ClockifyManifest.builder()
+            .key(System.getenv("ADDON_KEY"))
+            .name(System.getenv("ADDON_NAME"))
+            .baseUrl(publicUrl)
+            .requireFreePlan()
+            .scopes(List.of())
+            .description(System.getenv("ADDON_DESCRIPTION"))
+            .settings(ClockifySettings.builder()
+                .settingsTabs(List.of(ClockifySettingsTab.builder()
+                    .id("settings")
+                    .name("Settings")
+                    .settings(
+                        List.of(ClockifySetting.builder()
+                            .id("pumble-webhook")
+                            .name("Pumble Webhook URL")
+                            .allowEveryone()
+                            .asTxt()
+                            .value("{webhook url}")
+                            .build())
+                    ).build()))
+                .build()
+            )
+            .build()
         );
-
-        registerMiddlewares();
-        registerSupportedEvents();
         registerLifecycleEvents();
-        registerSettings();
-    }
-
-    private void registerMiddlewares() {
-        // register a simple middleware that adapts the HttpRequest parameter
-        // to an instance of its AddonRequest subclass
-        // middlewares are executed in the order they are registered
-        useMiddleware((request, chain) -> chain.apply(new AddonRequest(request)));
+        registerSupportedEvents();
     }
 
     private void registerSupportedEvents() {
@@ -64,42 +71,27 @@ public final class NotificationsAddon extends ClockifyAddon {
         // has full access to the Clockify workspace and should not be leaked to the user
         // or to the frontend
         registerLifecycleEvent(ClockifyLifecycleEvent.builder()
-                .path("/lifecycle/installed")
-                .onInstalled()
-                .build(), (AddonRequest r) -> {
-
-            repository.persistInstallation(r.getBody(Installation.class));
-            return HttpResponse.builder().statusCode(HttpStatus.OK_200).build();
+            .path("/lifecycle/installed")
+            .onInstalled()
+            .build(), new AddonRequest() {
+            @Override
+            public void additionalHandling(AddonRequest request) {
+                repository.persistInstallation(request.getBody(Installation.class));
+                request.getResponse().setStatus(HttpStatus.OK_200);
+            }
         });
 
         // this callback is called when the addon is uninstalled from the workspace
         // from now on, the addon will not be able to communicate with that workspace anymore
         registerLifecycleEvent(ClockifyLifecycleEvent.builder()
-                .path("/lifecycle/uninstalled")
-                .onDeleted()
-                .build(), (AddonRequest r) -> {
-
-            repository.removeInstallation(r.getBody(Installation.class));
-            return HttpResponse.builder().statusCode(HttpStatus.OK_200).build();
+            .path("/lifecycle/uninstalled")
+            .onDeleted()
+            .build(), new AddonRequest() {
+            @Override
+            public void additionalHandling(AddonRequest request) {
+                repository.removeInstallation(request.getBody(Installation.class));
+                request.getResponse().setStatus(HttpStatus.OK_200);
+            }
         });
-    }
-
-    private void registerSettings() {
-        // register the settings that we need for this addon to be functional
-        // currently we just require a URL where we can forward the events
-        registerSettings(ClockifySettings.builder()
-                .settingsTabs(List.of(ClockifySettingsTab.builder()
-                        .id("settings")
-                        .name("Settings")
-                        .settings(
-                                List.of(ClockifySetting.builder()
-                                        .id("pumble-webhook")
-                                        .name("Pumble Webhook URL")
-                                        .allowEveryone()
-                                        .asTxt()
-                                        .value("{webhook url}")
-                                        .build())
-                        ).build()))
-                .build());
     }
 }
