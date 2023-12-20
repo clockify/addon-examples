@@ -2,8 +2,6 @@ package com.cake.clockify.pumblenotifications;
 
 import com.cake.clockify.addonsdk.shared.RequestHandler;
 import com.cake.clockify.addonsdk.shared.utils.JwtUtils;
-import com.cake.clockify.addonsdk.shared.utils.Utils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
