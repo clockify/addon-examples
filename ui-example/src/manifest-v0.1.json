@@ -23,7 +23,8 @@
     {
       "type": "widget",
       "accessLevel": "EVERYONE",
-      "path": "/chat.html"
+      "path": "/chat.html",
+      "label": "Chat"
     },
     {
       "type": "sidebar",

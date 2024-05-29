@@ -1,4 +1,4 @@
-const ngrok = require('ngrok');
+const ngrok = require('@ngrok/ngrok');
 const { config } = require('./config')
 
 module.exports.getPublicUrlFromNgrok = async function() {

@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { getPublicUrlFromNgrok } = require('./getPublicUrlFromNgrok')
-const ngrok = require('ngrok')
+// const { getPublicUrlFromNgrok } = require('./getPublicUrlFromNgrok')
+const ngrok = require('@ngrok/ngrok')
 const { config } = require('./config')
 const manifest = require('./manifest-v0.1.json');
 const clc = require("cli-color");
@@ -9,7 +9,11 @@ const clc = require("cli-color");
 const manifestName = 'manifest-v0.1.json';
 
 ;(async () => {
-    const publicUrl = await getPublicUrlFromNgrok()
+    
+    // Establish connectivity
+    const listener = await ngrok.forward({ addr: 8080, authtoken: config.ngrok_auth_token });
+
+    const publicUrl = listener.url();
 
     const manifestPublicUrl =  `${publicUrl}/${manifestName}`
     manifest["baseUrl"] = publicUrl 

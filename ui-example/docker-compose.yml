@@ -1,6 +1,7 @@
 version: '3'
 services:
   addon:
+    container_name: ui-example
     restart: always
     build: .
     volumes:
