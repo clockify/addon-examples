@@ -12,7 +12,8 @@
       "type": "widget",
       "accessLevel": "EVERYONE",
       "path": "/",
-      "iconPath": "/icon.png"
+      "iconPath": "/icon.png",
+      "label": "Weather Widget"
     }
   ],
   "minimalSubscriptionPlan" : "FREE",
